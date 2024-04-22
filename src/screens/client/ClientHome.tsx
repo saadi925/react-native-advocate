@@ -1,16 +1,10 @@
-import { Text, View } from 'native-base';
-import React from 'react';
+import { Text, View } from 'native-base'
+import React from 'react'
 
-interface Props {
-
-}
-
-const ClientHome: React.FC<Props> = () => {
+export default function ClientHome() {
   return (
-  <View>
-    <Text>Client Home</Text>
-  </View>
-  );
-};
-
-export default ClientHome;
+    <View flex={1} bg={'#121212'}>
+        <Text>Client Home</Text>
+    </View>
+  )
+}

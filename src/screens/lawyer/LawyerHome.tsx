@@ -1,16 +1,13 @@
-import { Text, View } from 'native-base';
-import React from 'react';
+import { Text, View } from 'native-base'
+import React from 'react'
+import { useGetClientsQuery } from '../../store/query/lawyerApi'
 
-interface Props {
-
-}
-
-const LawyerHome: React.FC<Props> = () => {
+export default function LawyerHome() {
+   const {data , isLoading, error, isError, refetch} = useGetClientsQuery({})
+   
   return (
-  <View>
-    <Text>Lawyer Home</Text>
-  </View>
-  );
-};
-
-export default LawyerHome;
+    <View flex={1} w={'full'} backgroundColor={'darkBlue.900'}>
+        <Text>Lawyer Home</Text>
+    </View>
+  )
+}

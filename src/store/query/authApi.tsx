@@ -2,7 +2,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { HOST } from '../../../config/constants'
 import { loginData, loginResponse, signupData, SignupResponse } from '../../../types/Responses'
-
+type verifyPayload = {
+    code : string , email : string
+}
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -25,8 +27,9 @@ export const authApi = createApi({
        }),
        emailVerify: builder.mutation<{
         token : string, role : 'CLIENT' | 'LAWYER', redirectToProfile : boolean
-       }, {code : string , email : string}>({
+       }, verifyPayload>({
         query : (body) => ({
+            
             url : `/email_verify_code?email=${body.email}&code=${body.code}`,
             method : 'PUT',
         }),     

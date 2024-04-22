@@ -1,5 +1,5 @@
-import { Box, Button, Center, FormControl, Image, Input, Text, View, VStack } from 'native-base';
-import React from 'react';
+import { Box, Button, Center, FormControl, Image, Input, KeyboardAvoidingView, Text, View, VStack } from 'native-base';
+import React, { useEffect } from 'react';
 import useSignup from '../../hooks/useSignup';
 import { useNavigation } from '@react-navigation/native';
 import { SCREENS } from '../../../config/constants';
@@ -10,10 +10,12 @@ interface Props {
 }
 
 export const LoginForm: React.FC<Props> = () => {
-  const { formData, setFormData, errors, handleLogin,isLoading  } = useLogin()
+  const { formData, setFormData, errors, handleLogin,isLoading , setErrors } = useLogin()
   const navigation = useNavigation()
+
   return (
-    <VStack flex={1} backgroundColor={'#121212'}   color={'#fff'} width={'100%'}>
+<KeyboardAvoidingView behavior="padding" flex={1} justifyContent="center">
+<VStack flex={1} backgroundColor={'#121212'}   color={'#fff'} width={'100%'}>
         {/* Email */}
     <Image flex={1} rounded={'lg'} source={require('./login.jpg')} alt='Login banner image' style={{objectFit : 'cover'}}  width={"full"}/>
    <Box flex={2} p={2}>
@@ -26,19 +28,17 @@ export const LoginForm: React.FC<Props> = () => {
           email: value
         }
         )} />
-        <FormControl.HelperText _text={{
+       {!errors && <FormControl.HelperText _text={{
           fontSize: 'xs',
           color :'red.300'
         }}>
           Email should be a valid email.
-        </FormControl.HelperText>
+        </FormControl.HelperText>}
         {/* Error validation */}
         {
-          'email' in errors ? <FormControl.ErrorMessage _text={{
-            fontSize: 'xs'
-          }}>
-            {errors.email}
-          </FormControl.ErrorMessage>
+          'email' in errors ? <Text color={'red.300'}>
+            {errors.email  as string}
+          </Text>
           : <FormControl.ErrorMessage _text={{
             fontSize: 'xs'
           }}>
@@ -51,17 +51,15 @@ export const LoginForm: React.FC<Props> = () => {
         <FormControl.Label _text={{
           bold: true
         }}>Password</FormControl.Label>
-        <Input type='password' borderBottomWidth={1} borderWidth={0} borderColor={'indigo.600'} borderBottomColor={'indigo.600'} fontSize={'lg'} color={'white'} rounded={'lg'} placeholder="Password" onChangeText={value => setFormData({
+        <Input  type='password' borderBottomWidth={1} borderWidth={0} borderColor={'indigo.600'} borderBottomColor={'indigo.600'} fontSize={'lg'} color={'white'} rounded={'lg'} placeholder="Password" onChangeText={value => setFormData({
           ...formData,
           password: value
         })} />
         {/* Error validation */}
         {
-          'password' in errors ? <FormControl.ErrorMessage _text={{
-            fontSize: 'xs'
-          }}>
-            {errors.password}
-          </FormControl.ErrorMessage>
+          'password' in errors ? <Text color={'red.400'}>
+            {errors.password as string}
+          </Text>
           : <FormControl.ErrorMessage _text={{
             fontSize: 'xs'
           }}>
@@ -80,5 +78,6 @@ Sign In
    </Box>
 
     </VStack>
+</KeyboardAvoidingView>
   );
 };

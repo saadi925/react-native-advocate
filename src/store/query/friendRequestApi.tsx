@@ -2,7 +2,7 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HOST } from '../../../config/constants';
-import { prepareHeaders } from '../store';
+import { prepareHeaders } from '../middleware';
 
 const baseUrl = `${HOST}/friend-requests`;
 
@@ -20,6 +20,12 @@ export const friendRequestApi = createApi({
     acceptFriendRequest: builder.mutation({
       query: ({ requestId }) => ({
         url: `/${requestId}/accept`,
+        method: 'PUT',
+      }),
+    }),
+    cancelFriendRequest: builder.mutation({
+      query: ({ requestId }) => ({
+        url: `/${requestId}/cancel`,
         method: 'PUT',
       }),
     }),
@@ -53,6 +59,6 @@ export const {
   useRejectFriendRequestMutation,
   useGetReceivedRequestsQuery,
   useGetSentRequestsQuery,
-  useRemoveFriendMutation,
+  useRemoveFriendMutation,useCancelFriendRequestMutation,
   useGetFriendsQuery,
 } = friendRequestApi;

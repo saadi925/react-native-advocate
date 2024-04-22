@@ -2,7 +2,8 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HOST } from '../../../config/constants';
-import { prepareHeaders } from '../store';
+import { prepareHeaders } from '../middleware';
+import { CaseDataInput } from '../../../types/Cards';
 
 const baseUrl = `${HOST}/client`; 
 
@@ -22,7 +23,7 @@ export const clientApi = createApi({
         body: { status },
       }),
     }),
-    createCase: builder.mutation({
+    createCase: builder.mutation<void , CaseDataInput>({
       query: (caseData) => ({
         url: '/case',
         method: 'POST',

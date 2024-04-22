@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { prepareHeaders } from '../store';
+import { prepareHeaders } from '../middleware';
 import { HOST } from '../../../config/constants';
 
 const baseQuery = fetchBaseQuery({ baseUrl : `${HOST}/user/profile`, prepareHeaders });

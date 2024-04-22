@@ -8,13 +8,7 @@ import { lawyerApi } from './query/lawyerApi';
 import { clientApi } from './query/clientApi';
 import { commonApi } from './query/commonApi';
 import {authSlice} from './slices/authSlice';
-export async function prepareHeaders(headers: Headers) {
-  const token = await AsyncStorage.getItem("token");
-  if (token) {
-    headers.set("authorization", `Bearer ${token}`);
-  }
-  return headers;
-}
+
 export const store = configureStore({
   reducer: {
     [authSlice.reducerPath] : authSlice.reducer,

@@ -3,10 +3,11 @@ import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 import { View } from 'native-base';
 import { useGetCasesQuery } from '../../store/query/lawyerApi';
 import LawyerCaseCard from './LawyerCaseCard';
+import { LawyerCaseItem } from '../../../types/Cards';
 
-interface Case {}
+
 //  The cases which the lawyer is currently handling
-const MyCaseListing: React.FC = () => {
+const LawyerMyCases: React.FC = () => {
   const [isRefreshing, setRefreshing] = useState(false);
   const { data, isLoading, error, refetch, isError } = useGetCasesQuery({});
   
@@ -19,7 +20,7 @@ const MyCaseListing: React.FC = () => {
         setRefreshing(false);
       });
   };
-  const renderCaseItem = ({ item }: { item: Case }) => {
+  const renderCaseItem = ({ item }: { item: LawyerCaseItem }) => {
     return <LawyerCaseCard item={item} />;
   };
 
@@ -33,7 +34,7 @@ const MyCaseListing: React.FC = () => {
   //  if error
    :  isError ? 
    <View>
-
+  Error getting cases 
    </View> 
   //  after data fetching
     :  <FlatList
@@ -48,7 +49,7 @@ const MyCaseListing: React.FC = () => {
   );
 };
 
-export default MyCaseListing;
+export default LawyerMyCases;
 
 
 

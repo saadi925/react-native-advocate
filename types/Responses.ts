@@ -1,3 +1,5 @@
+import { ProfileInput } from "./Cards";
+
 export interface SignupResponse {
     message : string;
     redirectToVerify : boolean;
@@ -10,12 +12,10 @@ export interface signupData {
     }
 export type loginResponse = {
     token : string;
-    user : {
-        name : string;
-        email : string;
-        role : 'CLIENT' | 'LAWYER'
-    }
-
+    success : boolean
+    profile : ProfileInput
+    role : 'CLIENT' | 'LAWYER'
+    
 }
 export type loginData = {
     email : string;

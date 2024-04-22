@@ -1,5 +1,5 @@
 import { Box, Button, Center, FormControl, Image, Input, Text, View, VStack } from 'native-base';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useSignup from '../../hooks/useSignup';
 import { useNavigation } from '@react-navigation/native';
 import { SCREENS } from '../../../config/constants';
@@ -10,8 +10,9 @@ interface Props {
 }
 
 export const SignupForm: React.FC<Props> = () => {
-  const { formData, setFormData, errors, handleSignup, canVerify, code, setCode, isLoading, handleVerify, verifying ,} = useSignup()
+  const { formData, setFormData, errors, handleSignup, canVerify, code, setCode, isLoading, handleVerify, verifying ,setErrors, setCanVerify} = useSignup()
   const navigation = useNavigation()
+
   return (
     <VStack flex={1} backgroundColor={'#121212'}   color={'#fff'} width={'100%'}>
         {/* Email */}
@@ -41,11 +42,9 @@ export const SignupForm: React.FC<Props> = () => {
         </FormControl.HelperText>
         {/* Error validation */}
         {
-          'name' in errors ? <FormControl.ErrorMessage _text={{
-            fontSize: 'xs'
-          }}>
-            {errors.name}
-          </FormControl.ErrorMessage>
+          'name' in errors ? <Text color={'red.300'}>
+            {errors.name as string}
+          </Text>
           : <FormControl.ErrorMessage _text={{
             fontSize: 'xs'
           }}>
@@ -63,19 +62,17 @@ export const SignupForm: React.FC<Props> = () => {
           email: value
         }
         )} />
-        <FormControl.HelperText _text={{
+      {!errors &&  <FormControl.HelperText _text={{
           fontSize: 'xs',
           color :'red.300'
         }}>
           Email should be a valid email.
-        </FormControl.HelperText>
+        </FormControl.HelperText>}
         {/* Error validation */}
         {
-          'email' in errors ? <FormControl.ErrorMessage _text={{
-            fontSize: 'xs'
-          }}>
-            {errors.email}
-          </FormControl.ErrorMessage>
+          'email' in errors ? <Text color={'red.600'}>
+            {errors.email as string}
+          </Text>
           : <FormControl.ErrorMessage _text={{
             fontSize: 'xs', color :'red.300'
           }}>
@@ -94,11 +91,9 @@ export const SignupForm: React.FC<Props> = () => {
         })} />
         {/* Error validation */}
         {
-          'password' in errors ? <FormControl.ErrorMessage _text={{
-            fontSize: 'xs'
-          }}>
+          'password' in errors && typeof errors.password === 'string' ? <Text color={'red.400'}>
             {errors.password}
-          </FormControl.ErrorMessage>
+          </Text>
           : <FormControl.ErrorMessage _text={{
             fontSize: 'xs'
           }}>
@@ -117,20 +112,34 @@ export const SignupForm: React.FC<Props> = () => {
     </Text>
    </Box>
    {
-      canVerify && <Center position={'absolute'} height={'full'} width={'full'} bg={'#121212'}  >
+      canVerify && <Center px={"2%"} position={'absolute'} height={'full'} width={'full'} bg={'#121212'}  >
         <Text color={'red.300'} fontSize={'lg'}>Please verify your email address</Text>
         <FormControl isRequired>
         <FormControl.Label  _text={{
           bold: true
         }}>Verification Code</FormControl.Label>
-         <Input value={code} focusOutlineColor={'indigo.600'} type="text" keyboardType="decimal-pad"    borderBottomWidth={1} borderWidth={0} borderBottomColor={'indigo.600'} fontSize={'lg'} color={'white'} rounded={'lg'} placeholder="Verification Code" onChangeText={value => setCode(value)} />
+         <Input maxLength={6} value={code} focusOutlineColor={'indigo.600'} type="text" keyboardType="decimal-pad"    borderBottomWidth={1} borderWidth={0} borderBottomColor={'indigo.600'} fontSize={'lg'} color={'white'} rounded={'lg'} placeholder="Verification Code" onChangeText={setCode} />
+         {
+          errors && 'code' in errors && <Text color={'red.300'}>
+            {errors.code as string}
+          </Text>
+         }
         </FormControl>
+
        {
-        !verifying ?  <Button disabled={verifying} colorScheme={'indigo'} mt={4} width={'full'}>
+        !verifying ?  <Button disabled={verifying || code.length < 6} onPress={handleVerify} colorScheme={'indigo'} mt={4} width={'full'}>
         Verify
       </Button> : <ActivityIndicator />
        }
-        <Text color={'white'} px={2} fontSize={'lg'}>Enter the code sent to your userid@gmail.com</Text>
+       <Button px={3} colorScheme={'darkBlue'} mt={4} onPress={()=>setCanVerify(!canVerify)}>
+     Not your email ? 
+       </Button>
+ <Text color={'text.300'}>
+ Enter the code sent to your 
+ </Text>
+        <Text color={'blue.300'}  fontSize={'lg'}>
+        {formData.email.split('@')[0] + '***@' + formData.email.split('@')[1]}
+        </Text>
       </Center>
    }
     </VStack>

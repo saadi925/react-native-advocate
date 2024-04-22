@@ -2,7 +2,7 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HOST } from '../../../config/constants';
-import { prepareHeaders } from '../store';
+import { prepareHeaders } from '../middleware';
 
 const baseUrl = `${HOST}/common`; 
 

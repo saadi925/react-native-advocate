@@ -1,6 +1,8 @@
 export const STACKS = {
     Auth : 'Auth',
-    App : 'App'
+    App : 'App',
+    HomeTabs : 'HomeTabs',
+    Display : 'Display'
 }
 
 export const SCREENS = {
@@ -11,7 +13,10 @@ export const SCREENS = {
     Inbox : 'Inbox',
     Login :'Login',
     Signup : 'Signup',
-    Notifications : 'Notifications' 
+    Notifications : 'Notifications' ,
+    LawyerProfile : 'LawyerProfile',
+    
+    
 }
 
 

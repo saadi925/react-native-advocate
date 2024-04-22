@@ -2,7 +2,7 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HOST } from '../../../config/constants';
-import { prepareHeaders } from '../store';
+import { prepareHeaders } from '../middleware';
 
 const baseUrl = `${HOST}/lawyer`;
 const baseQuery = fetchBaseQuery({ baseUrl, prepareHeaders : prepareHeaders });
@@ -37,20 +37,6 @@ export const lawyerApi = createApi({
     getLawyerProfile: builder.query({
       query: () => '/profile',
     }),
-    createLawyerContact: builder.mutation({
-      query: (contactData) => ({
-        url: '/profile/contact',
-        method: 'POST',
-        body: contactData,
-      }),
-    }),
-    updateLawyerContact: builder.mutation({
-      query: (contactData) => ({
-        url: '/profile/contact',
-        method: 'PUT',
-        body: contactData,
-      }),
-    }),
     getCases: builder.query({
       query: () => '/cases',
     }),
@@ -66,8 +52,6 @@ export const {
   useAcceptCaseRequestMutation,
   useCreateOrUpdateLawyerProfileMutation,
   useGetLawyerProfileQuery,
-  useCreateLawyerContactMutation,
-  useUpdateLawyerContactMutation,
   useGetCasesQuery,
   useGetClientsQuery,
 } = lawyerApi;

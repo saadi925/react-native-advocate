@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
-import { View } from 'native-base';
+import { View, Text } from 'native-base';
 import { useGetAllNotificationsQuery } from '../../store/query/notificationsApi';
 import NotificationCard from './NotificationCard';
 import { Notification } from '../../../types/Cards';
@@ -26,16 +26,20 @@ const NotificationListing: React.FC = () => {
    <>
    {isLoading ? 
   //  loadingCase
-   <View>
+   <View flex={1} bg={'#121212'}>
  <ActivityIndicator />
-   </View> 
+   </View > 
   //  if error
    :  isError ? 
-   <View>
-
+   <View bg={'#121212'}>
+ Error getting Notifications
    </View> 
   //  after data fetching
-    :  <FlatList
+    :  <FlatList style={{
+      backgroundColor: '#121212',
+      padding: 10,
+    
+    }}
       data={data}
       renderItem={renderNotificationItem}
       keyExtractor={(item, index) => index.toString()} // Extract unique key
@@ -53,7 +57,9 @@ export default NotificationListing;
 export  function EmptyListComponent() {
   return (
     <View flex={1}>
-      
+      <Text color='gray.600'>
+        No notifications found
+      </Text>
     </View>
   )
 }

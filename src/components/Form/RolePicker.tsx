@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Button, Text, HStack } from 'native-base';
+import { Pressable } from 'react-native';
 
 const RolePicker = ({
     selectedRole = 'CLIENT',setSelectedRole 
@@ -13,13 +14,19 @@ const RolePicker = ({
   };
 
   return (
-    <HStack  justifyContent={'space-around'}  >
-        <Button rounded={'full'} px={6} borderWidth={1} borderColor={selectedRole === "LAWYER"? 'transparent': 'red.600'}  bg={selectedRole === "CLIENT" ? 'green.600' : 'gray.600'}  color={'white'}  mx={2}
+    <HStack  alignItems={'center'}  justifyContent={'center'}  >
+        <Button  roundedLeft={'full'} py={1} px={4} bgColor={
+          selectedRole === 'CLIENT' ? 'primary.500' : 'gray.500'
+        }
           onPress={() => handleRoleSelection('CLIENT')}
         >
           <Text color={'white'} fontSize={'lg'}>Client</Text>
         </Button>
-        <Button rounded={'full'}  borderWidth={1} borderColor={selectedRole === "CLIENT"? 'transparent': 'red.600'} px={6} bg={selectedRole === "LAWYER" ? 'green.600' : 'gray.600'} 
+        <Button roundedRight={'full'} py={1} px={4}
+          bgColor={
+            selectedRole === 'LAWYER' ? 'primary.500' : 'gray.500'
+          }
+
           onPress={() => handleRoleSelection('LAWYER')}
         >
           <Text fontSize={'lg'} color={'white'}>Lawyer</Text>
