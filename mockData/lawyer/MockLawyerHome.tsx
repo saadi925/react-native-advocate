@@ -6,7 +6,7 @@ import { COLORS } from '../../config/constants';
 import { ClientCaseItem } from '../../types/Cards';
 import { mockClients } from './clients';
 
-const LawyerHome: React.FC = () => {
+const MockLawyerHome: React.FC = () => {
   const [isRefreshing, setRefreshing] = useState(false);
   const [isLoading , setIsLoading] = useState(true)
   const handleRefresh = () => {
@@ -44,7 +44,7 @@ const LawyerHome: React.FC = () => {
    </>
   );
 };
-export default LawyerHome;
+export default MockLawyerHome;
 
 
 

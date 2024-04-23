@@ -8,19 +8,22 @@ import LawyerMyCases from '../components/lawyer_cases/LawyerCaseListing';
 import LawyerHome from './lawyer/LawyerHome';
 import ClientHome from './client/ClientHome';
 import HomeIcon, {NotificationIcon} from '../icons/HomeIcon';
-import UsersIcon, { AddFriend } from '../icons/UsersIcon';
+import  { AddFriend } from '../icons/UsersIcon';
 import CaseIcon from '../icons/CaseIcon';
 import AppHeader, { ScreenHeader } from '../components/Header';
-import { Box, Button, Image, Text, View } from 'native-base';
+import {Button, Image, Text, View } from 'native-base';
 import RequestTabs from './RequestTabs';
-import { useRoute } from '@react-navigation/native';
 import MockHome from '../../mockData/client/MockHome';
 import MockNotifications from '../../mockData/MockNotification';
+import MockLawyerHome from '../../mockData/lawyer/MockLawyerHome';
+import { RootState } from '../store/store';
 const Tab = createBottomTabNavigator();
 
 export default function AppTabs() {
   const mock = true
-  const role = useSelector((state: any) => state.auth.role);
+  const role = useSelector((state: RootState) => state.auth.role);
+  console.log("role", role);
+  
   return (
     <Tab.Navigator screenOptions={{
         
@@ -30,8 +33,6 @@ export default function AppTabs() {
       },
       tabBarActiveTintColor : COLORS.surface,
       tabBarInactiveTintColor : 'gray',
-      
-    
     }}  >
       <Tab.Screen 
         options={{
@@ -39,7 +40,7 @@ export default function AppTabs() {
           header : AppHeader
         }}
         name={SCREENS.Home}
-        component={role === 'LAWYER' ? LawyerHome : (mock ? MockHome : ClientHome)}
+        component={role === 'LAWYER' ? (mock ? MockLawyerHome: LawyerHome) : (mock ? MockHome : ClientHome)}
       />
       <Tab.Screen
         options={{

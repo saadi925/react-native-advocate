@@ -13,10 +13,11 @@ import { setProfile } from '../../store/slices/authSlice';
 export  function useProfile() {
   const dispatch = useDispatch()  
   const [isEditing, setIsEditing] = useState(false);
-  const  {data , isLoading, error : profileGettingError, isError : profileIsError} =useGetUserProfileQuery({})
+  const [errMsg , setErrMsg] = useState<string | null>(null)
+  const  {data , isLoading, error : profileGettingError, isError : profileIsError} =useGetUserProfileQuery()
     const [onSave , {isLoading : saving , error : savingError, isError}] =useCreateProfileMutation()
     const [queryCities , setQuery ] = useState("I")
-    const [editedProfileData, setEditedProfileData] = useState<Partial<ProfileInput> | null>(data);
+    const [editedProfileData, setEditedProfileData] = useState<Partial<ProfileInput> | null | undefined>(data);
   
     const [cities, setCities] = useState<string[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
@@ -24,12 +25,7 @@ export  function useProfile() {
   // useEffect(()=>{
   //  fetchCities(queryCities)
   // },[queryCities, setQuery])
-  useEffect(()=>{
-    if (data) {
-      setEditedProfileData(data);
-      dispatch(setProfile(data));
-    }
-  },[dispatch, ])
+
     const fetchCities = async (query : string) => {
       try {
         const response = await fetch(`${HOST}/api/get-cities?startsWith=${query}`);
@@ -45,13 +41,25 @@ export  function useProfile() {
     };
 
     const handleSave = async () => {
-      const response = await onSave({...editedProfileData, avatar : avatarSource});
-       dispatch(setProfile({
+     try {
+      const response = await onSave({...editedProfileData, avatar : avatarSource}).unwrap()
+    if ('createdAt' in response) {
+      dispatch(setProfile({
         ...editedProfileData, avatar : avatarSource
        }))
-       console.log(response);
-       
-      setIsEditing(false);
+
+       setIsEditing(false);
+
+    }
+      
+     } catch (exception) {
+      console.log("Error saving profile", exception);
+    if (exception && typeof exception === 'object' &&'data' in exception && exception.data &&
+    typeof exception.data === 'object' && 'error' in exception.data && typeof exception.data.error === 'string') {
+      setErrMsg(exception.data.error);
+    }
+     }
+
 
     };
   
@@ -122,8 +130,8 @@ export  function useProfile() {
         editedProfileData,setQuery,
         setEditedProfileData,
         saving,
-        savingError,
-        isError, profileData : data
-        
+        savingError,errMsg,
+        isError, profileData : data,
+        gettingProfileLoading : isLoading,
     }
 }

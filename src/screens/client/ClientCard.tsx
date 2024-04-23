@@ -26,7 +26,7 @@ export default function LawyerItemCard({item} : LawyerItemCardProps) {
      </View>
         <HStack justifyContent={'space-between'}>
         <Text color={COLORS.surface} fontWeight={'semibold'}>{location}</Text>
-        <Text color={'grey.600'} fontWeight={'semibold'}>Joined  {date}</Text>
+        <Text color={COLORS.surface} fontWeight={'semibold'}>Joined  {date}</Text>
         </HStack>
         <Text color={'white'} fontSize={'lg'}>{description}</Text>
    <HStack justifyContent={"space-between"}>

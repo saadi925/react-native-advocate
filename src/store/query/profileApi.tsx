@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { prepareHeaders } from '../middleware';
 import { HOST } from '../../../config/constants';
+import { profile } from '../../../types/Cards';
 
 const baseQuery = fetchBaseQuery({ baseUrl : `${HOST}/user`, prepareHeaders });
 export const profileApi = createApi({
@@ -21,7 +22,7 @@ export const profileApi = createApi({
         body: profileData,
       }),
     }),
-    getUserProfile: builder.query({
+    getUserProfile: builder.query<profile, void>({
       query: () => '/profile',
     }),
     deleteUserProfile: builder.mutation({

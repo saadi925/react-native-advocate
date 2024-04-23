@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
-import { View } from 'native-base';
+import { Text, View } from 'native-base';
 import { useGetCasesQuery } from '../../store/query/lawyerApi';
 import LawyerCaseCard from './LawyerCaseCard';
 import { LawyerCaseItem } from '../../../types/Cards';
+import { COLORS } from '../../../config/constants';
 
 
 //  The cases which the lawyer is currently handling
@@ -25,7 +26,7 @@ const LawyerMyCases: React.FC = () => {
   };
 
   return (
-   <>
+   <View flex={1} bg={COLORS.main}>
    {isLoading ? 
   //  loading
    <View>
@@ -45,7 +46,7 @@ const LawyerMyCases: React.FC = () => {
       ListEmptyComponent={() => <EmptyListComponent />} // Display if no data
     />
     }
-   </>
+   </View>
   );
 };
 
@@ -55,8 +56,8 @@ export default LawyerMyCases;
 
 export  function EmptyListComponent() {
   return (
-    <View flex={1}>
-      
-    </View>
+    <Text fontSize={20}  p={4} color={'red.500'}>
+      No cases found
+    </Text>
   )
 }

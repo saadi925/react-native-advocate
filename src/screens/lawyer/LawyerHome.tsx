@@ -52,7 +52,7 @@ export  function EmptyListComponent() {
   return (
     <View flex={1}>
       <Text color='white'>
-        No lawyers found
+        No cases found
       </Text>
     </View>
   )

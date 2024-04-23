@@ -81,7 +81,8 @@ const useSignup = () => {
       if (verifyEmailResponse.token) {
         AsyncStorage.setItem('token', verifyEmailResponse.token)
         dispatch(setAuthenticated(true))
-        dispatch(setRole(verifyEmailResponse.role))
+        dispatch(setRole(verifyEmailResponse.role)) 
+        AsyncStorage.setItem("role", verifyEmailResponse.role)
         setCanVerify(false)
       }
     } catch (error) {

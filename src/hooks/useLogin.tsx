@@ -49,6 +49,7 @@ const useLogin = () => {
         AsyncStorage.setItem('token', response.token)
         toggleAuth()
        dispatch(setProfile(response.profile))
+       AsyncStorage.setItem("role", response.role)
         dispatch(setRole(response.role))
       }
       

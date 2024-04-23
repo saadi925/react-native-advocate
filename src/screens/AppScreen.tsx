@@ -13,7 +13,7 @@ export default function AppScreen() {
  return  (
   <Stack.Navigator>
     <Stack.Screen options={{
-      headerShown: false
+      headerShown: false, presentation : 'modal'
     }} name={STACKS.HomeTabs} component={AppTabs} />
     <Stack.Screen name={SCREENS.Profile} 
     options={{
@@ -30,7 +30,20 @@ export default function AppScreen() {
     }}
     component={Profile} />
     {
-      role === 'LAWYER' && <Stack.Screen name={SCREENS.LawyerProfile} component={LawyerProfileScreen} />
+      role === 'LAWYER' && <Stack.Screen
+      options={{
+        headerStyle :{
+          backgroundColor : COLORS.main,
+          
+        }
+        ,headerTitleStyle : {
+          color : '#fff'
+        },
+        headerTintColor : COLORS.surface,
+        
+        
+      }}
+      name={SCREENS.LawyerProfile} component={LawyerProfileScreen} />
     }
   </Stack.Navigator>
  )

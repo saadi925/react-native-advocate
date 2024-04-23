@@ -150,3 +150,18 @@ export type LawyerProfile = {
     officeAddress? : string,
     facebook? : string,
 }
+
+
+export type profile = {
+    id: string;
+    displayname: string;
+    avatar: string;
+    location: string;
+    bio: string;
+    phone: string;
+    user :{
+      role : string;
+    }
+    createdAt: string;
+    updatedAt: string;
+  };

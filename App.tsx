@@ -29,10 +29,10 @@ function AppWrapper() {
   >
       {
         !auth ? <Stack.Screen  name={STACKS.Auth} options={{
-          headerShown : false
+          headerShown : false, presentation : 'fullScreenModal'
         
         }} component={AuthScreen} /> : <Stack.Screen options={{
-          headerShown : false
+          headerShown : false, presentation : 'fullScreenModal'
         }} name={STACKS.App}  component={AppScreen} /> 
       }
       
