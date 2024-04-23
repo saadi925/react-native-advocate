@@ -1,5 +1,5 @@
 import React from 'react'
-import { SCREENS, STACKS } from '../../config/constants';
+import { COLORS, SCREENS, STACKS } from '../../config/constants';
 import { Stack } from '../../App';
 import AppTabs from './AppTabs';
 import Profile from '../components/profile/Profile';
@@ -18,13 +18,14 @@ export default function AppScreen() {
     <Stack.Screen name={SCREENS.Profile} 
     options={{
       headerStyle :{
-        backgroundColor : '#121212',
-        color : '#fff'
-      
+        backgroundColor : COLORS.main,
+        
       }
       ,headerTitleStyle : {
         color : '#fff'
       },
+      headerTintColor : COLORS.surface,
+      
       
     }}
     component={Profile} />

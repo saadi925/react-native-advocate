@@ -4,8 +4,9 @@ import { View, Text } from 'native-base';
 import { useGetAllNotificationsQuery } from '../../store/query/notificationsApi';
 import NotificationCard from './NotificationCard';
 import { Notification } from '../../../types/Cards';
+import { COLORS } from '../../../config/constants';
 
-const NotificationListing: React.FC = () => {
+const MockNotifications: React.FC = () => {
   const [isRefreshing, setRefreshing] = useState(false);
   const { data, isLoading, error, refetch, isError } = useGetAllNotificationsQuery({});
   
@@ -26,17 +27,11 @@ const NotificationListing: React.FC = () => {
    <>
    {isLoading ? 
   //  loadingCase
-   <View flex={1} bg={'#121212'}>
+   <View flex={1} bg={COLORS.main}>
  <ActivityIndicator />
    </View > 
-  //  if error
-   :  isError ? 
-   <View bg={'#121212'}>
- Error getting Notifications
-   </View> 
-  //  after data fetching
     :  <FlatList style={{
-      backgroundColor: '#121212',
+      backgroundColor : COLORS.main,
       padding: 10,
     
     }}
@@ -50,7 +45,7 @@ const NotificationListing: React.FC = () => {
    </>
   );
 };
-export default NotificationListing;
+export default MockNotifications;
 
 
 

@@ -96,10 +96,10 @@ export type ClientCaseItem = {
     createdAt: string;
     category : CaseCategory
     client: {
-        name: string | null;
         profile: 
         {
             avatar: string | null;
+            location : string | null;
             displayname: string | null;
         } | null;
     };
@@ -107,7 +107,7 @@ export type ClientCaseItem = {
 
 export type LawyerItem = {
    id : number
-   status : CaseStatus
+   status : "AVAILABLE" | "BUSY" | "OFFLINE"
    rating : number
    description : string
    experience : string 

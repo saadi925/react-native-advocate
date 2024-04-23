@@ -4,6 +4,7 @@ import FriendRequestCard from './RequestCard';
 import { Text, View } from 'native-base';
 import {  FriendRequest } from '../../../types/Cards';
 import { useAcceptFriendRequestMutation, useGetReceivedRequestsQuery, useRejectFriendRequestMutation } from '../../store/query/friendRequestApi';
+import { COLORS } from '../../../config/constants';
 
 const RecievedFriendRequests: React.FC = () => {
   const [isRefreshing, setRefreshing] = useState(false);
@@ -46,17 +47,10 @@ const RecievedFriendRequests: React.FC = () => {
 console.log(fetchingRequestError);
 
   return (
-   <View flex={1} bg={'#121212'}>
+   <View flex={1} bg={COLORS.main}>
    {isLoading ? 
   //  loading
  <ActivityIndicator />
-  //  if error
-   :  isError ? 
-       <Text color={'gray.600'}>
-       {('data' in fetchingRequestError && fetchingRequestError.data && typeof fetchingRequestError.data === 'object' && 'error' in fetchingRequestError.data && typeof fetchingRequestError.data.error === 'string'
-       ) ? fetchingRequestError.data.error: 'Something went wrong'
-       }
-       </Text>
   //  after data fetching
     :  <FlatList
       data={data}
@@ -76,7 +70,7 @@ export default RecievedFriendRequests;
 
 export  function EmptyListComponent() {
   return (
-      <Text color={'gray.600'}>
+      <Text color={'white'}>
          No Incomming Request 
       </Text>
   )

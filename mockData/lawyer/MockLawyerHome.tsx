@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 import { View, Text } from 'native-base';
-import LawyerItemCard from './ClientCard';
-import { LawyerItem, Notification } from '../../../types/Cards';
-import { COLORS } from '../../../config/constants';
-import { useGetLawyersQuery } from '../../store/query/clientApi';
+import LawyerItemCard from '../../src/screens/lawyer/CaseCard';
+import { COLORS } from '../../config/constants';
+import { ClientCaseItem } from '../../types/Cards';
+import { mockClients } from './clients';
 
-const ClientHome: React.FC = () => {
+const LawyerHome: React.FC = () => {
   const [isRefreshing, setRefreshing] = useState(false);
-  const { data, isLoading, error, refetch, isError } = useGetLawyersQuery({});
-  
+  const [isLoading , setIsLoading] = useState(true)
   const handleRefresh = () => {
     setRefreshing(true);
-    refetch()
-      .then(() => setRefreshing(false))
-      .catch((err) => {
-        console.error('Error refreshing data:', err);
+    setTimeout(() => {
         setRefreshing(false);
-      });
+    }, 300);
   };
-  const renderLawyerItem = ({ item }: { item: LawyerItem }) => {
+  const renderLawyerItem = ({ item }: { item: ClientCaseItem }) => {
     return <LawyerItemCard item={item} />;
   };
-
+ useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoading(false)
+    }, 2000)
+ },[])
   return (
    <>
    {isLoading ? 
@@ -34,7 +34,7 @@ const ClientHome: React.FC = () => {
       backgroundColor : COLORS.main,
       padding: 10,
     }}
-      data={data}
+      data={mockClients}
       renderItem={renderLawyerItem}
       keyExtractor={(item, index) => index.toString()} // Extract unique key
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
@@ -44,7 +44,7 @@ const ClientHome: React.FC = () => {
    </>
   );
 };
-export default ClientHome;
+export default LawyerHome;
 
 
 

@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { prepareHeaders } from '../middleware';
 import { HOST } from '../../../config/constants';
 
-const baseQuery = fetchBaseQuery({ baseUrl : `${HOST}/user/profile`, prepareHeaders });
+const baseQuery = fetchBaseQuery({ baseUrl : `${HOST}/user`, prepareHeaders });
 export const profileApi = createApi({
   reducerPath: 'profileApi',
   baseQuery,

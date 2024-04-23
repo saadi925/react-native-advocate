@@ -5,14 +5,22 @@ import ClientCaseCard from './CaseCard';
 import { View, Text, Fab, Icon, Button } from 'native-base';
 import { CaseDataInput, ClientCaseItem } from '../../../types/Cards';
 import CreateCase from './CreateCase';
+import { COLORS } from '../../../config/constants';
+type CaseListingProps = {
+  isCreating: boolean;
+  // toggleCreate: () => void;
+};
 
-const MyCaseListing: React.FC = () => {
+const MyCaseListing: React.FC<CaseListingProps> = ({
+  isCreating
+}) => {
+  console.log(isCreating);
+  
   const { data, isLoading, error, refetch, isError } = useGetCasesQuery({});
   const [createCase, { isLoading: creating, error: postingError }] = useCreateCaseMutation();
   const [deleteCase, { isLoading: deleting, error: deletingError }] = useDeleteCaseMutation();
   const [updateCase, { isLoading: updating, error: updatingError }] = useUpdateCaseMutation();
-  const [isCreating, setCreating] = useState(false);
-  const toggleCreate = () => setCreating(!isCreating);
+  
   const [caseData, setCaseData] = useState<CaseDataInput>({
     title: '',
     description: '',
@@ -59,7 +67,7 @@ const MyCaseListing: React.FC = () => {
   };
 
   return (
-    <View flex={1} bg={'#121212'}>
+    <View flex={1} bg={COLORS.main}>
       {/* Create Case Form */}
       {isCreating ?
         <CreateCase
@@ -75,9 +83,6 @@ const MyCaseListing: React.FC = () => {
           {isLoading ?
             <ActivityIndicator />
             :
-            isError ?
-              <Text color={'red.600'}>Error while fetching cases.</Text>
-              :
               <FlatList
                 data={data}
                 renderItem={renderCaseItem}

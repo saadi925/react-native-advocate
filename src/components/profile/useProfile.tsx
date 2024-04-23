@@ -4,24 +4,32 @@ import RNFS from 'react-native-fs';
 
 import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import { HOST } from '../../../config/constants';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ProfileInput } from '../../../types/Cards';
-import { useCreateProfileMutation } from '../../store/query/profileApi';
+import { useCreateProfileMutation, useGetUserProfileQuery } from '../../store/query/profileApi';
 import { RootState } from '../../store/store';
+import { setProfile } from '../../store/slices/authSlice';
 
 export  function useProfile() {
-    const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch()  
+  const [isEditing, setIsEditing] = useState(false);
+  const  {data , isLoading, error : profileGettingError, isError : profileIsError} =useGetUserProfileQuery({})
     const [onSave , {isLoading : saving , error : savingError, isError}] =useCreateProfileMutation()
     const [queryCities , setQuery ] = useState("I")
-    const profileData = useSelector((state : RootState)=> state.auth.profile)
-    const [editedProfileData, setEditedProfileData] = useState<Partial<ProfileInput> | null>(profileData);
+    const [editedProfileData, setEditedProfileData] = useState<Partial<ProfileInput> | null>(data);
+  
     const [cities, setCities] = useState<string[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
     const [avatarSource, setAvatarSource] = useState<string | null>(null);
+  // useEffect(()=>{
+  //  fetchCities(queryCities)
+  // },[queryCities, setQuery])
   useEffect(()=>{
-   fetchCities(queryCities)
-  },[queryCities, setQuery])
-  
+    if (data) {
+      setEditedProfileData(data);
+      dispatch(setProfile(data));
+    }
+  },[dispatch, ])
     const fetchCities = async (query : string) => {
       try {
         const response = await fetch(`${HOST}/api/get-cities?startsWith=${query}`);
@@ -35,11 +43,16 @@ export  function useProfile() {
         console.error('Error fetching cities:', error);
       }
     };
-  
+
     const handleSave = async () => {
-        await uploadAvatar();
-      onSave({...editedProfileData, avatar : avatarSource});
+      const response = await onSave({...editedProfileData, avatar : avatarSource});
+       dispatch(setProfile({
+        ...editedProfileData, avatar : avatarSource
+       }))
+       console.log(response);
+       
       setIsEditing(false);
+
     };
   
     const uploadAvatar = async () => {
@@ -47,15 +60,16 @@ export  function useProfile() {
       if (editedProfileData?.avatar) {
         const token = await AsyncStorage.getItem('token');
         const avatarData = await RNFS.readFile(editedProfileData.avatar, 'base64');
-        const response = await fetch(`${HOST}/api/profile/avatar`, {
+        const response = await fetch(`${HOST}/user/profile/avatar`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            'authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({ avatar: avatarData }),
         });
-    
+     console.log(response);
+     
         if (response.ok) {
           const body = await response.json();
           if (body.avatar) {
@@ -88,6 +102,7 @@ export  function useProfile() {
         } else if (response.assets) {
           const source = { uri: response.assets[0].uri };
           setEditedProfileData({ ...editedProfileData, avatar: source.uri });
+           uploadAvatar()
           
         }
       });
@@ -108,7 +123,7 @@ export  function useProfile() {
         setEditedProfileData,
         saving,
         savingError,
-        isError
+        isError, profileData : data
         
     }
 }

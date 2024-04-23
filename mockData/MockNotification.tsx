@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 import { View, Text } from 'native-base';
-import LawyerItemCard from './ClientCard';
-import { LawyerItem, Notification } from '../../../types/Cards';
-import { COLORS } from '../../../config/constants';
-import { useGetLawyersQuery } from '../../store/query/clientApi';
+import NotificationCard from '../src/components/notifications/NotificationCard';
+import { COLORS } from '../config/constants';
+import { Notification } from '../types/Cards';
+import { mockNotifications } from './notifications';
 
-const ClientHome: React.FC = () => {
+const NotificationListing: React.FC = () => {
   const [isRefreshing, setRefreshing] = useState(false);
-  const { data, isLoading, error, refetch, isError } = useGetLawyersQuery({});
-  
+  const [isLoading, setLoading] = useState(true);
   const handleRefresh = () => {
     setRefreshing(true);
-    refetch()
-      .then(() => setRefreshing(false))
-      .catch((err) => {
-        console.error('Error refreshing data:', err);
-        setRefreshing(false);
-      });
+    setTimeout(() => {
+        setRefreshing(false)
+    }, 300);
   };
-  const renderLawyerItem = ({ item }: { item: LawyerItem }) => {
-    return <LawyerItemCard item={item} />;
+  const renderNotificationItem = ({ item }: { item: Notification }) => {
+    return <NotificationCard item={item} />;
   };
+useEffect(()=>{
+  setLoading(false)
+},[])
 
   return (
    <>
@@ -33,9 +32,10 @@ const ClientHome: React.FC = () => {
     :  <FlatList style={{
       backgroundColor : COLORS.main,
       padding: 10,
+    
     }}
-      data={data}
-      renderItem={renderLawyerItem}
+      data={mockNotifications}
+      renderItem={renderNotificationItem}
       keyExtractor={(item, index) => index.toString()} // Extract unique key
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       ListEmptyComponent={() => <EmptyListComponent />} // Display if no data
@@ -44,15 +44,15 @@ const ClientHome: React.FC = () => {
    </>
   );
 };
-export default ClientHome;
+export default NotificationListing;
 
 
 
 export  function EmptyListComponent() {
   return (
     <View flex={1}>
-      <Text color='white'>
-        No lawyers found
+      <Text color='gray.600'>
+        No notifications found
       </Text>
     </View>
   )

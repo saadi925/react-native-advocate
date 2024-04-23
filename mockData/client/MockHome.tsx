@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 import { View, Text } from 'native-base';
-import LawyerItemCard from './ClientCard';
-import { LawyerItem, Notification } from '../../../types/Cards';
-import { COLORS } from '../../../config/constants';
-import { useGetLawyersQuery } from '../../store/query/clientApi';
+import LawyerItemCard from '../../src/screens/client/ClientCard';
+import { LawyerItem } from '../../types/Cards';
+import { mockLawyers } from './lawyers';
+import { COLORS } from '../../config/constants';
 
-const ClientHome: React.FC = () => {
+const MockHome: React.FC = () => {
   const [isRefreshing, setRefreshing] = useState(false);
-  const { data, isLoading, error, refetch, isError } = useGetLawyersQuery({});
-  
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIsLoading(false)
+    },2000)
+  },[])
   const handleRefresh = () => {
     setRefreshing(true);
-    refetch()
-      .then(() => setRefreshing(false))
-      .catch((err) => {
-        console.error('Error refreshing data:', err);
-        setRefreshing(false);
-      });
+    
   };
   const renderLawyerItem = ({ item }: { item: LawyerItem }) => {
     return <LawyerItemCard item={item} />;
@@ -34,7 +33,7 @@ const ClientHome: React.FC = () => {
       backgroundColor : COLORS.main,
       padding: 10,
     }}
-      data={data}
+      data={mockLawyers}
       renderItem={renderLawyerItem}
       keyExtractor={(item, index) => index.toString()} // Extract unique key
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
@@ -44,7 +43,7 @@ const ClientHome: React.FC = () => {
    </>
   );
 };
-export default ClientHome;
+export default MockHome;
 
 
 
