@@ -22,10 +22,10 @@ const SentRequestList: React.FC = () => {
   const renderSentRequest = ({ item }: { item: SentFriendRequest }) => {
     return <SentRequestsCard item={item} onCancel={handleCancel} cancelError={error} cancelling={cancelling} />
   };
-console.log(fetchingRequestError);
 
   return (
     <View flex={1} bg={COLORS.main}>
+      <Text color={'white'} fontSize={'xl'} p={2} fontWeight={'bold'}>Sent Requests</Text>
       {gettingRequests ? (
         <ActivityIndicator />
       ) : (

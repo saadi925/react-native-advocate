@@ -1,23 +1,28 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react'
-import RNFS from 'react-native-fs';
+import  { useEffect, useState } from 'react'
+// import RNFS from 'react-native-fs';
 
 import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import { HOST } from '../../../config/constants';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ProfileInput } from '../../../types/Cards';
 import { useCreateProfileMutation, useGetUserProfileQuery } from '../../store/query/profileApi';
-import { RootState } from '../../store/store';
 import { setProfile } from '../../store/slices/authSlice';
 
 export  function useProfile() {
   const dispatch = useDispatch()  
   const [isEditing, setIsEditing] = useState(false);
   const [errMsg , setErrMsg] = useState<string | null>(null)
-  const  {data , isLoading, error : profileGettingError, isError : profileIsError} =useGetUserProfileQuery()
+  // const  {data ,refetch, isLoading, error : profileGettingError, isError : profileIsError} =useGetUserProfileQuery()
+  //   console.log(data);
+  //   useEffect(()=>{
+  //     if (data) {
+  //       dispatch(setProfile(data))
+  //     }
+  //   },[])
     const [onSave , {isLoading : saving , error : savingError, isError}] =useCreateProfileMutation()
-    const [queryCities , setQuery ] = useState("I")
-    const [editedProfileData, setEditedProfileData] = useState<Partial<ProfileInput> | null | undefined>(data);
+    // const [queryCities , setQuery ] = useState("I")
+    const [editedProfileData, setEditedProfileData] = useState<Partial<ProfileInput> | null | undefined>();
   
     const [cities, setCities] = useState<string[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>('');
@@ -47,6 +52,7 @@ export  function useProfile() {
       dispatch(setProfile({
         ...editedProfileData, avatar : avatarSource
        }))
+      //  refetch()
 
        setIsEditing(false);
 
@@ -63,28 +69,33 @@ export  function useProfile() {
 
     };
   
-    const uploadAvatar = async () => {
+    const uploadAvatar = async (data : any) => {
       try {
       if (editedProfileData?.avatar) {
         const token = await AsyncStorage.getItem('token');
-        const avatarData = await RNFS.readFile(editedProfileData.avatar, 'base64');
+        console.log(editedProfileData.avatar);
+        
+        // const avatarData = await RNFS.readFile(editedProfileData.avatar, 'base64');
         const response = await fetch(`${HOST}/user/profile/avatar`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            
             'authorization': `Bearer ${token}`,
           },
-          body: JSON.stringify({ avatar: avatarData }),
+          body: JSON.stringify({ avatar: data }),
         });
-     console.log(response);
-     
+      // console.log(response);
+      
         if (response.ok) {
           const body = await response.json();
+          console.log(body);
           if (body.avatar) {
-            setAvatarSource(body.avatar);
+            
+            setAvatarSource(`${HOST}${body.avatar}`);
           }
         } else {
-          console.error('Failed to upload avatar:', response.status);
+          console.error('Failed to upload avatar:', response);
         }
       }
       } catch (error) {
@@ -108,9 +119,12 @@ export  function useProfile() {
         } else if (response.errorCode) {
           console.error('ImagePicker Error:', response.errorMessage);
         } else if (response.assets) {
+          // console.log(response.assets);
+          
           const source = { uri: response.assets[0].uri };
           setEditedProfileData({ ...editedProfileData, avatar: source.uri });
-           uploadAvatar()
+           uploadAvatar(response.assets[0])
+           
           
         }
       });
@@ -127,11 +141,11 @@ export  function useProfile() {
         setSelectedCity,
         avatarSource,
         setAvatarSource,
-        editedProfileData,setQuery,
+        editedProfileData,
         setEditedProfileData,
         saving,
         savingError,errMsg,
-        isError, profileData : data,
-        gettingProfileLoading : isLoading,
+        isError, profileData : undefined,
+        gettingProfileLoading : undefined,
     }
 }

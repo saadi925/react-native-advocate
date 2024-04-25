@@ -32,15 +32,14 @@ const setValue = (name : keyof ProfileInput , value : string) =>{
   )
 }
 const role = useSelector((state : RootState)=> state.auth.role)
-const {logout} = useAuthentication()
   return (
-  <>
+  <View flex={1} bg={COLORS.main}>
   {
     gettingProfileLoading ? <ActivityIndicator size="large" color={COLORS.main} /> :
     <Box p={4} bg={COLORS.main} flex={1} shadow={2} >
     <Box alignItems={'center'}>
     <Pressable  onPress={openImagePicker}>
-    <Avatar source={{uri : editedProfileData?.avatar || undefined}} size={'2xl'}/> 
+    <Avatar source={{uri : profileData?.avatar || editedProfileData?.avatar || undefined}} size={'2xl'}/> 
     </Pressable>
     </Box>
 <Box >
@@ -135,7 +134,7 @@ const {logout} = useAuthentication()
  }
   </Box>
   }
-  </>
+  </View>
   );
 };
 

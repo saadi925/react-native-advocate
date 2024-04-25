@@ -65,7 +65,6 @@ const CreateCase: React.FC<CreateCaseProps> = ({
       </Select>
 
       {/* Error Message */}
-      {/* {error && <Text>Error: {error.message}</Text>} */}
 
       {/* Create Button */}
       <Button rounded={'full'} bg={COLORS.surface} onPress={onCreate} disabled={creating}>

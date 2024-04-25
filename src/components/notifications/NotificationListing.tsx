@@ -6,10 +6,11 @@ import NotificationCard from './NotificationCard';
 import { Notification } from '../../../types/Cards';
 import { COLORS } from '../../../config/constants';
 
-const MockNotifications: React.FC = () => {
-  const [isRefreshing, setRefreshing] = useState(false);
+const Notifications: React.FC = () => {
   const { data, isLoading, error, refetch, isError } = useGetAllNotificationsQuery({});
+  // console.log(data);
   
+  const [isRefreshing, setRefreshing] = useState(false);
   const handleRefresh = () => {
     setRefreshing(true);
     refetch()
@@ -35,7 +36,7 @@ const MockNotifications: React.FC = () => {
       padding: 10,
     
     }}
-      data={data}
+      data={data.notifications}
       renderItem={renderNotificationItem}
       keyExtractor={(item, index) => index.toString()} // Extract unique key
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
@@ -45,7 +46,7 @@ const MockNotifications: React.FC = () => {
    </>
   );
 };
-export default MockNotifications;
+export default Notifications;
 
 
 

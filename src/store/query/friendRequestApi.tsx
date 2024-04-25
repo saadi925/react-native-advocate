@@ -12,25 +12,31 @@ export const friendRequestApi = createApi({
   baseQuery,
   endpoints: (builder) => ({
     sendFriendRequest: builder.mutation({
-      query: ({ caseId }) => ({
+      query: (caseId) => ({
         url: `/${caseId}`,
         method: 'POST',
       }),
     }),
     acceptFriendRequest: builder.mutation({
-      query: ({ requestId }) => ({
+      query: ( requestId ) => ({
         url: `/${requestId}/accept`,
         method: 'PUT',
       }),
     }),
+    sendFRToLawyer: builder.mutation({
+      query: ( requestId ) => ({
+        url: `/lawyer/${requestId}`,
+        method: 'POST',
+      }),
+    }),
     cancelFriendRequest: builder.mutation({
-      query: ({ requestId }) => ({
+      query: ( requestId ) => ({
         url: `/${requestId}/cancel`,
         method: 'PUT',
       }),
     }),
     rejectFriendRequest: builder.mutation({
-      query: ({ requestId }) => ({
+      query: (requestId ) => ({
         url: `/${requestId}/reject`,
         method: 'PUT',
       }),
@@ -42,7 +48,7 @@ export const friendRequestApi = createApi({
       query: () => '/sent',
     }),
     removeFriend: builder.mutation({
-      query: ({ requestId }) => ({
+      query: (requestId ) => ({
         url: `/friends/${requestId}`,
         method: 'DELETE',
       }),
@@ -57,7 +63,7 @@ export const {
   useSendFriendRequestMutation,
   useAcceptFriendRequestMutation,
   useRejectFriendRequestMutation,
-  useGetReceivedRequestsQuery,
+  useGetReceivedRequestsQuery,useSendFRToLawyerMutation,
   useGetSentRequestsQuery,
   useRemoveFriendMutation,useCancelFriendRequestMutation,
   useGetFriendsQuery,

@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { store } from './src/store/store';
 import AppHeader from './src/components/Header';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export const Stack = createNativeStackNavigator();
 
@@ -20,7 +21,8 @@ function AppWrapper() {
   return (
       <NavigationContainer >
       <SafeAreaView style={{flex : 1, backgroundColor :"#121212", padding : 0, margin : 0}}>
-  <NativeBaseProvider >
+<GestureHandlerRootView >
+<NativeBaseProvider >
     <StatusBar backgroundColor={COLORS.main} barStyle="light-content" />
   <Stack.Navigator
    screenOptions={{
@@ -38,6 +40,7 @@ function AppWrapper() {
       
       </Stack.Navigator>
   </NativeBaseProvider>
+</GestureHandlerRootView>
   </SafeAreaView>
     </NavigationContainer>
   );

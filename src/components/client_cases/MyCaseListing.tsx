@@ -20,7 +20,7 @@ const MyCaseListing: React.FC<CaseListingProps> = ({
   const [createCase, { isLoading: creating, error: postingError }] = useCreateCaseMutation();
   const [deleteCase, { isLoading: deleting, error: deletingError }] = useDeleteCaseMutation();
   const [updateCase, { isLoading: updating, error: updatingError }] = useUpdateCaseMutation();
-  
+  const [msg , setMsg] = useState<string | null>(null)
   const [caseData, setCaseData] = useState<CaseDataInput>({
     title: '',
     description: '',
@@ -40,7 +40,9 @@ const MyCaseListing: React.FC<CaseListingProps> = ({
 
   const onCreate = async () => {
     try {
-      await createCase(caseData);
+     const response = await createCase(caseData);
+      setMsg('Case created successfully')
+      
       refetch();
     } catch (error) {
       console.log("creating case error:", error);
@@ -69,7 +71,9 @@ const MyCaseListing: React.FC<CaseListingProps> = ({
   return (
     <View flex={1} bg={COLORS.main}>
       {/* Create Case Form */}
+      
       {isCreating ?
+        <>
         <CreateCase
           data={caseData}
           setData={setCaseData}
@@ -77,6 +81,11 @@ const MyCaseListing: React.FC<CaseListingProps> = ({
           error={postingError}
           creating={creating}
         />
+        {
+          msg ? <Text color={COLORS.surface} fontSize={20}>{msg}</Text> : null
+        }
+        
+        </>
         :
         <>
           {/* Display Data or Loading/Errors */}
@@ -93,6 +102,7 @@ const MyCaseListing: React.FC<CaseListingProps> = ({
           }
         </>
       }
+
     </View>
   );
 };

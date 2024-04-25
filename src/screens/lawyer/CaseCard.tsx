@@ -1,7 +1,9 @@
 import React from 'react'
 import { ClientCaseItem } from '../../../types/Cards'
 import { Avatar, HStack, View, Text, Box } from 'native-base'
-import { COLORS } from '../../../config/constants'
+import { COLORS, SCREENS } from '../../../config/constants'
+import { Pressable } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 type CaseCardProps = {
   item : ClientCaseItem 
   }
@@ -22,16 +24,24 @@ export default function ClientCard({
     profile
   } = client
    const avatar = profile?.avatar
+   const {navigate} = useNavigation() 
     const displayname = profile?.displayname
     const location = profile?.location
     const createDate = new Date(createdAt).toLocaleDateString()
     const updateDate = new Date(updatedAt).toLocaleDateString()
   return (
-    <View bg={COLORS.back} mt={2} p={1} rounded={'lg'}>
-      <HStack space={3} alignItems={'center'} >
+    <View bg={COLORS.back} mt={2} p={1} py={4} rounded={'lg'}>
+     <Pressable onPress={()=> {
+      // @ts-ignore
+      navigate(SCREENS.OtherClientModal, {
+        Case : item
+      })
+     }}>
+     <HStack space={3} alignItems={'center'} >
      <Avatar source={{uri: avatar || undefined}} />
         <Text fontSize={18} color={'white'}>{displayname}</Text>
         </HStack>
+     </Pressable>
         <View position={'absolute'} right={2} top={5}>
         <Text color={status === "OPEN" ? COLORS.surface : status === "IN_PROGRESS" ? "blue.600" : "error.500"}
         fontWeight={"bold"}>

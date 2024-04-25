@@ -20,7 +20,7 @@ import { RootState } from '../store/store';
 const Tab = createBottomTabNavigator();
 
 export default function AppTabs() {
-  const mock = true
+  const mock = false
   const role = useSelector((state: RootState) => state.auth.role);
   console.log("role", role);
   

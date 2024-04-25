@@ -2,16 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
-import { setAuthenticated, setProfile, setRole } from '../store/slices/authSlice';
+import { setAuthenticated, setLawyerProfile, setProfile, setRole, setUser } from '../store/slices/authSlice';
 import { HOST } from '../../config/constants';
 
 const useAuthentication = () => {
   const dispatch : AppDispatch = useDispatch()
- 
   const auth =useSelector((state : RootState)=> state.auth.isAuthenticated)
   const profileData = useSelector((state : RootState)=> state.auth.profile)
-  console.log(profileData);
- 
+  console.log(profileData?.displayname);
   
  useEffect(()=>{
     getToken().then(token =>{
@@ -48,7 +46,7 @@ const useAuthentication = () => {
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log("error while fetching profile",error);  
     }
  }
  async function getToken (){
@@ -68,8 +66,13 @@ const useAuthentication = () => {
   }
  async function logout(){
    await AsyncStorage.removeItem('token')
+   await  AsyncStorage.removeItem('role')
    dispatch(setAuthenticated(false))
-   AsyncStorage.removeItem('role')
+  //  @ts-ignore
+   dispatch(setRole(null))
+   dispatch(setProfile(null))
+   dispatch(setUser(null))
+   dispatch(setLawyerProfile(null))
  }
  return {
     auth, toggleAuth, logout, getToken

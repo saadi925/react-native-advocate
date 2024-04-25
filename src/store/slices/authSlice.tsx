@@ -47,6 +47,6 @@ export const authSlice = createSlice({
 });
 
 // Export action creators
-export const { setAuthenticated, setUser, clearAuthState, setRole, setProfile } = authSlice.actions;
+export const { setAuthenticated, setUser, clearAuthState, setRole, setProfile, setLawyerProfile } = authSlice.actions;
 
 // Export reducer

@@ -24,11 +24,11 @@ const MockLawyerHome: React.FC = () => {
     }, 2000)
  },[])
   return (
-   <>
+   <View flex={1} bg={COLORS.main} pb={6}>
    {isLoading ? 
   //  loadingCase
-   <View flex={1} bg={COLORS.main}>
- <ActivityIndicator />
+   <View >
+ <ActivityIndicator color={COLORS.surface} />
    </View > 
     :  <FlatList style={{
       backgroundColor : COLORS.main,
@@ -41,7 +41,7 @@ const MockLawyerHome: React.FC = () => {
       ListEmptyComponent={() => <EmptyListComponent />} // Display if no data
     />
     }
-   </>
+   </View>
   );
 };
 export default MockLawyerHome;

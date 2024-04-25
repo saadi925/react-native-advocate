@@ -1,3 +1,4 @@
+
 export const STACKS = {
     Auth : 'Auth',
     App : 'App',
@@ -17,16 +18,20 @@ export const SCREENS = {
     LawyerProfile : 'LawyerProfile',
     SentRequests : 'Sent Requests',
     ReceivedRequests : 'Received Requests',
-    
+    OtherClientModal : 'OtherClientModal',
+    OtherLawyerModal : 'OtherLawyerModal',
+    Chat : 'Chat'
     
 }
 
 
-export const HOST = 'https://www.codingstack.site'
+// export const HOST = 'https://www.codingstack.site'
+export const HOST = 'https://60ef-2402-ad80-64-83bc-fad2-6aab-afb-2271.ngrok-free.app'
+
 
 
 export const COLORS = {
-    main : '#212134',
-    back : '#121212',
+    back : '#212134',
+    main : '#121212',
     surface : '#01d676'
 }

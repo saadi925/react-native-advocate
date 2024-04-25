@@ -28,11 +28,6 @@ export default function RequestTabs() {
         }
        }}
       >
-        <Tab.Screen options={{
-        tabBarIcon(props) {
-          return <UserIcon fill={COLORS.surface} size={32} />
-        },
-        }}  name={SCREENS.SentRequests} component={SentRequestList} />
         <Tab.Screen 
          options={{
         tabBarIcon(props) {
@@ -40,6 +35,12 @@ export default function RequestTabs() {
         }
          }}
         name={SCREENS.ReceivedRequests} component={RecievedFriendRequests} />
+        <Tab.Screen options={{
+        tabBarIcon(props) {
+          return <UserIcon fill={COLORS.surface} size={32} />
+        },
+        }}  name={SCREENS.SentRequests} component={SentRequestList} />
+
       </Tab.Navigator>
   );
 }

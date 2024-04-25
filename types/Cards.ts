@@ -32,10 +32,11 @@ export type SentFriendRequest = {
     createdAt: string;
     updatedAt: string;
 }
+type RequestStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED'
 
 export type FriendRequest = {
     id: bigint;
-    status: CaseStatus;
+    status: RequestStatus;
     createdAt: string;
     updatedAt: string;
     sender: {
@@ -47,7 +48,7 @@ export type FriendRequest = {
 }
 export type LawyerCaseRequest = {
     id: bigint;
-    status: CaseStatus;
+    status: RequestStatus;
     createdAt: string;
     caseId: bigint;
     client: {
@@ -60,7 +61,7 @@ export type LawyerCaseRequest = {
 
 export type ClientCaseRequest = {
     id: bigint;
-    status: CaseStatus;
+    status: RequestStatus;
     createdAt: string;
     caseId: bigint;
     lawyer: {
@@ -165,3 +166,11 @@ export type profile = {
     createdAt: string;
     updatedAt: string;
   };
+
+  export type Friend ={
+    online: boolean;
+    displayname?: string | null | undefined;
+    avatar?: string | null | undefined;
+    id: string;
+    otherUserId: string;
+  }

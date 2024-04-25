@@ -32,11 +32,6 @@ const LawyerMyCases: React.FC = () => {
    <View>
  <ActivityIndicator />
    </View> 
-  //  if error
-   :  isError ? 
-   <View>
-  Error getting cases 
-   </View> 
   //  after data fetching
     :  <FlatList
       data={data}

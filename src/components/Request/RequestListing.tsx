@@ -10,21 +10,29 @@ const RecievedFriendRequests: React.FC = () => {
   const [isRefreshing, setRefreshing] = useState(false);
   const[acceptRequest , {isLoading : accepting , error : acceptError}] = useAcceptFriendRequestMutation()
   const [rejectRequest , {isLoading : rejecting, error : rejectError}] = useRejectFriendRequestMutation()
-  
+  const [msg , setMsg] = React.useState<string>('')
   const { data, isLoading, error : fetchingRequestError, refetch, isError } = useGetReceivedRequestsQuery({});
-  const onAccept = (id : bigint)=>{
+  console.log("data : ", data);
+  
+  const onAccept = async (id : bigint)=>{
   try {
-    const res = acceptRequest(id).unwrap()
+    const res = await acceptRequest(id).unwrap()
     console.log("success : ", res);
+    if ('message' in res && typeof res.message === 'string') {
+      setMsg(res.message);
+    }
     
-  } catch (exception) {
+  } catch (exception : any) {
     console.log('error while accepting : ', exception);
-    
+      if (typeof exception.data.error === 'string') {
+        setMsg(exception.data.error);
+      }
+      
   }
   }
-  const onReject = (id : bigint)=> {
+  const onReject =async  (id : bigint)=> {
     try {
-      const res = rejectRequest(id).unwrap()
+      const res = await rejectRequest(id).unwrap()
       console.log("success : ", res);
       
     } catch (exception) {
@@ -44,10 +52,12 @@ const RecievedFriendRequests: React.FC = () => {
   const renderFriendRequest = ({ item }: { item: FriendRequest }) => {
     return <FriendRequestCard loading={{accepting, rejecting}} onAccept={onAccept} onReject={onReject} item={item} />;
   };
-console.log(fetchingRequestError);
 
   return (
    <View flex={1} bg={COLORS.main}>
+      <Text color={'white'} fontSize={'xl'} p={2} fontWeight={'bold'}>Received Requests</Text>
+      <Text color={'white'} fontSize={'xl'}  fontWeight={'bold'}>{msg}</Text>
+
    {isLoading ? 
   //  loading
  <ActivityIndicator />

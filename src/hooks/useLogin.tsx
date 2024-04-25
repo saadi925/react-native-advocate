@@ -49,11 +49,14 @@ const useLogin = () => {
         AsyncStorage.setItem('token', response.token)
         toggleAuth()
        dispatch(setProfile(response.profile))
+       dispatch(setUser(response.userId))
        AsyncStorage.setItem("role", response.role)
         dispatch(setRole(response.role))
       }
       
     } catch (error : unknown) {
+      console.log(error);
+      
       const errs = errorChecker(error)
       if ( errs.length === 1&&typeof errs[0].msg === 'string'){
         setErrors({password : errs[0].msg})
