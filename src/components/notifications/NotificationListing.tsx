@@ -8,7 +8,7 @@ import { COLORS } from '../../../config/constants';
 
 const Notifications: React.FC = () => {
   const { data, isLoading, error, refetch, isError } = useGetAllNotificationsQuery({});
-  // console.log(data);
+  console.log(data);
   
   const [isRefreshing, setRefreshing] = useState(false);
   const handleRefresh = () => {
@@ -36,7 +36,7 @@ const Notifications: React.FC = () => {
       padding: 10,
     
     }}
-      data={data.notifications}
+      data={data?.notifications}
       renderItem={renderNotificationItem}
       keyExtractor={(item, index) => index.toString()} // Extract unique key
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}

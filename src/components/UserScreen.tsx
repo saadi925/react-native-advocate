@@ -37,7 +37,7 @@ export default function UserScreen() {
         })
            }}
            >
-           <HStack space={2} alignItems={'center'}>
+           <HStack space={2} alignItems={'center'} borderColor={COLORS.surface}>
                 <Avatar size="md" source={{ uri: item?.avatar || undefined }} />
                 <Text fontWeight={'bold'} color={'white'} fontSize={18}>{item.displayname || 'unknown user'}</Text>
             </HStack>
@@ -45,6 +45,8 @@ export default function UserScreen() {
 
         </View>;
     };
+
+    
   return (
     <View bg={COLORS.main} flex={1}>
       {

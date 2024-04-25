@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Input, Button, Avatar, VStack, HStack, Select, TextArea, Center, View } from 'native-base';
+import { Box, Text, Input, Button, Avatar, VStack, HStack, Select, TextArea, Center, View, ScrollView, Image } from 'native-base';
 import { useProfile } from './useProfile';
 import EditIcon from '../../icons/EditIcon';
 import { ActivityIndicator, KeyboardType, Pressable } from 'react-native';
@@ -10,6 +10,7 @@ import useAuthentication from '../../hooks/useAuthentication';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useNavigation } from '@react-navigation/native';
+import CitySelector from './CitySelector';
 
 interface ProfileProps {}
 
@@ -23,9 +24,9 @@ const Profile: React.FC<ProfileProps> = () => {
     setEditedProfileData,
     saving,
     profileData, errMsg,
-    gettingProfileLoading
-  } = useProfile();
+    gettingProfileLoading,cities } = useProfile();
   const {navigate} = useNavigation()
+  const [query, setQuery] = React.useState('');
 const setValue = (name : keyof ProfileInput , value : string) =>{
   setEditedProfileData(
     {...editedProfileData, [name] : value}
@@ -39,7 +40,10 @@ const role = useSelector((state : RootState)=> state.auth.role)
     <Box p={4} bg={COLORS.main} flex={1} shadow={2} >
     <Box alignItems={'center'}>
     <Pressable  onPress={openImagePicker}>
-    <Avatar source={{uri : profileData?.avatar || editedProfileData?.avatar || undefined}} size={'2xl'}/> 
+  {
+    profileData?.avatar || editedProfileData?.avatar ?    <Image rounded={'full'} w={40} h={40} alt='avatar' source={{uri : profileData?.avatar || editedProfileData?.avatar || undefined}} />
+    : <Avatar /> 
+  }
     </Pressable>
     </Box>
 <Box >
@@ -70,8 +74,25 @@ const role = useSelector((state : RootState)=> state.auth.role)
        color : COLORS.surface,
     }}>{'Location'}</Text>
     {isEditing ?
-    <FormInput name={"location"} value={editedProfileData?.location} placeholder='Location' setValue={setValue} />
-    :  <Text my={3}color={'#fff'} fontSize={'2xl'}>
+   
+<>
+<Input 
+   colorScheme={''}
+    fontSize={20} 
+    color={'white'}
+     value={query}
+    borderWidth={0}
+    borderBottomWidth={1}
+   focusOutlineColor={'blue.600'}
+   mt={1} 
+   placeholder={'Search City'}
+   onChangeText={(text)=> setQuery(text)} />
+  {
+    // @ts-ignore 
+    cities &&  <CitySelector cities={cities} query={query} onSelectCity={(city)=> setValue('location',city )} selectedCity={profileData?.location || undefined}  />
+  }
+</>
+   :  <Text my={3}color={'#fff'} fontSize={'2xl'}>
    {profileData?.location || 'Location'}
   </Text>
    }

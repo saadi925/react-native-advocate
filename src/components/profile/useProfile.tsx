@@ -8,51 +8,38 @@ import { useDispatch } from 'react-redux';
 import { ProfileInput } from '../../../types/Cards';
 import { useCreateProfileMutation, useGetUserProfileQuery } from '../../store/query/profileApi';
 import { setProfile } from '../../store/slices/authSlice';
-
+import { citiesData } from './cities/cities.data';
+// location : string | undefined,
+// bio : string | undefined,
+// displayname : string | undefined, 
+// phone : string | undefined ,
+// avatar : string | undefined | null
 export  function useProfile() {
   const dispatch = useDispatch()  
   const [isEditing, setIsEditing] = useState(false);
   const [errMsg , setErrMsg] = useState<string | null>(null)
-  // const  {data ,refetch, isLoading, error : profileGettingError, isError : profileIsError} =useGetUserProfileQuery()
-  //   console.log(data);
-  //   useEffect(()=>{
-  //     if (data) {
-  //       dispatch(setProfile(data))
-  //     }
-  //   },[])
+  const  {data ,refetch, isLoading, error : profileGettingError, isError : profileIsError} =useGetUserProfileQuery()
+    console.log(data);
+    useEffect(()=>{
+      if (data) {
+        dispatch(setProfile(data))
+      }
+    },[])
     const [onSave , {isLoading : saving , error : savingError, isError}] =useCreateProfileMutation()
-    // const [queryCities , setQuery ] = useState("I")
-    const [editedProfileData, setEditedProfileData] = useState<Partial<ProfileInput> | null | undefined>();
+    const [editedProfileData, setEditedProfileData] = useState<Partial<ProfileInput> | null | undefined>(data);
   
-    const [cities, setCities] = useState<string[]>([]);
+    const [cities, setCities] = useState<string[]>(citiesData);
     const [selectedCity, setSelectedCity] = useState<string>('');
     const [avatarSource, setAvatarSource] = useState<string | null>(null);
-  // useEffect(()=>{
-  //  fetchCities(queryCities)
-  // },[queryCities, setQuery])
-
-    const fetchCities = async (query : string) => {
-      try {
-        const response = await fetch(`${HOST}/api/get-cities?startsWith=${query}`);
-        if (response.ok) {
-          const data = await response.json();
-          setCities(data);
-        } else {
-          console.error('Failed to fetch cities');
-        }
-      } catch (error) {
-        console.error('Error fetching cities:', error);
-      }
-    };
-
+ 
     const handleSave = async () => {
      try {
       const response = await onSave({...editedProfileData, avatar : avatarSource}).unwrap()
     if ('createdAt' in response) {
       dispatch(setProfile({
-        ...editedProfileData, avatar : avatarSource
+        ...editedProfileData, avatar : avatarSource || editedProfileData?.avatar,
        }))
-      //  refetch()
+       refetch()
 
        setIsEditing(false);
 
@@ -85,8 +72,8 @@ export  function useProfile() {
           },
           body: JSON.stringify({ avatar: data }),
         });
-      // console.log(response);
-      
+        console.log(response);
+        
         if (response.ok) {
           const body = await response.json();
           console.log(body);
@@ -100,7 +87,7 @@ export  function useProfile() {
       }
       } catch (error) {
         console.error('Error uploading avatar:', error);
-      }
+      }isLoading
     };
     
     const openImagePicker = () => {
@@ -115,7 +102,7 @@ export  function useProfile() {
     
       launchImageLibrary(options, (response: ImagePickerResponse) => {
         if (response.didCancel) {
-          console.log('User cancelled image picker');
+          console.log('User cancelled image picker');isLoading
         } else if (response.errorCode) {
           console.error('ImagePicker Error:', response.errorMessage);
         } else if (response.assets) {
@@ -144,8 +131,10 @@ export  function useProfile() {
         editedProfileData,
         setEditedProfileData,
         saving,
-        savingError,errMsg,
-        isError, profileData : undefined,
-        gettingProfileLoading : undefined,
+        savingError,
+        errMsg,
+        
+        isError, profileData : data,
+        gettingProfileLoading : isLoading,
     }
 }

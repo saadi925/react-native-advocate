@@ -76,7 +76,7 @@ export default function AppScreen() {
         </HStack>
       }
     }} name={SCREENS.OtherClientModal} component={OtherClientModal} />
-    {/* <Stack.Screen name={SCREENS.Chat} options={{
+    <Stack.Screen name={SCREENS.Chat} options={{
       headerTitle : 'Active Chats',
       headerStyle :{
           backgroundColor : COLORS.main,
@@ -87,9 +87,9 @@ export default function AppScreen() {
       },
       headerTintColor : COLORS.surface,
     
-    }} component={UserScreen} /> */}
-    <Stack.Screen name={SCREENS.Chat} options={{
-      headerTitle : 'Inbox',
+    }} component={UserScreen} />
+    <Stack.Screen name={SCREENS.Inbox} options={{
+      headerTitle : '',
       headerStyle :{
           backgroundColor : COLORS.main,
           

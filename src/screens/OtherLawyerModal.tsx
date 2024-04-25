@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { OtherLawyerProfile } from '../../types/Responses'
 import { Avatar, HStack, ScrollView, Text, View } from 'native-base'
 import { useGetOtherLawyerProfileQuery } from '../store/query/profileApi'
@@ -42,12 +42,12 @@ const [alreadySent , setAlreadySent] = React.useState(false)
  }
       
     }
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         navigation.setOptions({
           headerLeft(){
               return  <HStack space={4} alignItems={'center'}>
               <Avatar source={{uri : item?.avatar }}/>
-              <Text color={'white'} fontSize={'xl'}>{item?.displayname || 'unknow user'}</Text>
+              <Text color={'white'} fontSize={'xl'}>{item?.displayname || 'advocco user'}</Text>
             </HStack>
           }
           , headerRight(){

@@ -15,8 +15,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export const Stack = createNativeStackNavigator();
 
 function AppWrapper() {
-  const {auth} = useAuthentication(
-  )
+  const {auth} = useAuthentication()
 
   return (
       <NavigationContainer >

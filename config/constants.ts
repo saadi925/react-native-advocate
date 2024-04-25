@@ -26,7 +26,7 @@ export const SCREENS = {
 
 
 // export const HOST = 'https://www.codingstack.site'
-export const HOST = 'https://60ef-2402-ad80-64-83bc-fad2-6aab-afb-2271.ngrok-free.app'
+export const HOST = 'https://5dac-111-119-189-5.ngrok-free.app'
 
 
 
