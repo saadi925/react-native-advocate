@@ -5,6 +5,7 @@ import { io } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomIcon, { SendIcon } from '../chat/icon/Send';
 import { COLORS, HOST } from '../../config/constants';
+import RenderInputToolbar from '../chat/RenderInputToolbar';
 
 const getToken = async () => {
   return await AsyncStorage.getItem('token');
@@ -137,6 +138,7 @@ export default function Inbox({ route, navigation }: any) {
         alwaysShowSend
         renderSend={renderSend}
         scrollToBottom
+        // renderInputToolbar={RenderInputToolbar}
         showUserAvatar
         scrollToBottomComponent={scrollToBottomComponent}
         onInputTextChanged={onInputTextChanged}

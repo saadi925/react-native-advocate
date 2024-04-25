@@ -40,10 +40,10 @@ const role = useSelector((state : RootState)=> state.auth.role)
     <Box p={4} bg={COLORS.main} flex={1} shadow={2} >
     <Box alignItems={'center'}>
     <Pressable  onPress={openImagePicker}>
-  {
-    profileData?.avatar || editedProfileData?.avatar ?    <Image rounded={'full'} w={40} h={40} alt='avatar' source={{uri : profileData?.avatar || editedProfileData?.avatar || undefined}} />
-    : <Avatar /> 
-  }
+    <Avatar source={{
+      uri : profileData?.avatar || editedProfileData?.avatar  || 'https://www.pngitem.com/pimgs/m/146-1462217_profile-icon-png-image-free-download-searchpng-employee.png'
+    }} size={'2xl'}
+    />
     </Pressable>
     </Box>
 <Box >

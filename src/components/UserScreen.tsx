@@ -1,9 +1,9 @@
-import { Avatar, FlatList, HStack, Text, View } from 'native-base'
+import { Avatar, FlatList, HStack, Image, Text, View } from 'native-base'
 import React, { useEffect, useState } from 'react'
 import { COLORS, SCREENS } from '../../config/constants'
 import { useGetFriendsQuery } from '../store/query/friendRequestApi'
 import { RefreshControl } from 'react-native-gesture-handler'
-import { ActivityIndicator, Pressable } from 'react-native'
+import { ActivityIndicator, Pressable, TouchableOpacity } from 'react-native'
 import { Friend } from '../../types/Cards'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 export default function UserScreen() {
     const {data , refetch,isLoading, isError, }= useGetFriendsQuery({})
   const {navigate} = useNavigation();
-  const [userId , setUserId] = useState(useSelector((state : RootState)=> state.auth?.user.userId))
+  const [userId , setUserId] = useState(useSelector((state : RootState)=> state.auth?.user?.userId))
   const [isRefreshing, setRefreshing] = useState(false);
  useEffect(()=>{
   AsyncStorage.getItem('userId').then(res=>{
@@ -33,23 +33,23 @@ export default function UserScreen() {
       });
   };
     const renderUserItem = ({ item }: { item: Friend }) => {
-        return <View mt={4} p={2} rounded={'lg'} bg={"gray.900"}>
-           <Pressable 
+      return <View mt={4} p={2} borderColor={COLORS.surface} borderWidth={1} rounded={'lg'} bg={"gray.900"}>
+      <TouchableOpacity 
            onPress={()=>{
-    //   @ts-ignore
+             //   @ts-ignore
             navigate(SCREENS.Inbox, {
-                otherUserId : item.otherUserId,
-                displayname : item.displayname,
-                avatar : item.avatar,
-                userId : userId
+              otherUserId : item.otherUserId,
+              displayname : item.displayname,
+              avatar : item.avatar,
+              userId : userId
         })
            }}
            >
-           <HStack space={2} alignItems={'center'} borderColor={COLORS.surface}>
-                <Avatar size="md" source={{ uri: item?.avatar || undefined }} />
+           <HStack space={2}  alignItems={'center'} borderColor={COLORS.surface}>
+                {item.avatar? <Image source={{uri : item.avatar}} alt={'avatar'} size={10} rounded={100} /> : <Avatar size={10} />}
                 <Text fontWeight={'bold'} color={'white'} fontSize={18}>{item.displayname || 'unknown user'}</Text>
             </HStack>
-           </Pressable>
+           </TouchableOpacity>
 
         </View>;
     };
