@@ -102,7 +102,6 @@ export default function AppScreen() {
         
         return <HStack space={4} alignItems={'center'}>
           <Avatar />
-          <Text color={'white'} fontSize={'xl'}>Inbox</Text>
         </HStack>
       }
     

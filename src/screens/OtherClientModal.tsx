@@ -1,9 +1,10 @@
-import { Avatar, Button, Center, HStack, Image, ScrollView, Text, View } from 'native-base'
+import { Avatar, Box, Button, Center, HStack, Image, ScrollView, Text, View } from 'native-base'
 import React, { useEffect, useLayoutEffect } from 'react'
-import { COLORS } from '../../config/constants'
+import { COLORS, SCREENS } from '../../config/constants'
 import { useGetOtherClientProfileQuery } from '../store/query/profileApi'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, TouchableOpacity } from 'react-native'
 import { useSendFriendRequestMutation } from '../store/query/friendRequestApi'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function OtherClientModal({route, navigation} :  any) {
    const {Case} = route.params
@@ -20,15 +21,17 @@ export default function OtherClientModal({route, navigation} :  any) {
     profile
   } = client
   const [msg , setMsg] = React.useState('')
-    const location = profile?.location
+  const location = profile?.location
     const createDate = new Date(createdAt).toLocaleDateString()
    const [sendRequest , {isLoading : sendingRequest , isError : IsSendingRequestError}] = useSendFriendRequestMutation()
+   const {navigate} = navigation()
    const [IssendFriend, setSendFriend] = React.useState(false)
     const updateDate = new Date(updatedAt).toLocaleDateString()
   useLayoutEffect(()=>{
   navigation.setOptions({
     headerLeft(){
-        return  <HStack space={4} alignItems={'center'}>
+        return  <TouchableOpacity>
+          <HStack  space={4} alignItems={'center'}>
         {
           !(data?.avatar) ?   <Avatar source={{uri : data?.avatar }}/> : <Image
           w={40} h={40} alt={'avatar'} source={{
@@ -37,8 +40,11 @@ export default function OtherClientModal({route, navigation} :  any) {
         }
         <Text color={'white'} fontSize={'xl'}>{data?.displayname || 'advoco user'}</Text>
       </HStack>
+        </TouchableOpacity>
     }
   })
+
+ 
   },[navigation])
     return (
     <View  flex={1} bg={COLORS.main}>

@@ -1,5 +1,5 @@
 import { Avatar, FlatList, HStack, Text, View } from 'native-base'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { COLORS, SCREENS } from '../../config/constants'
 import { useGetFriendsQuery } from '../store/query/friendRequestApi'
 import { RefreshControl } from 'react-native-gesture-handler'
@@ -8,13 +8,22 @@ import { Friend } from '../../types/Cards'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function UserScreen() {
-  const userId = useSelector((state : RootState)=> state.auth.user)
     const {data , refetch,isLoading, isError, }= useGetFriendsQuery({})
   const {navigate} = useNavigation();
+  const [userId , setUserId] = useState(useSelector((state : RootState)=> state.auth?.user.userId))
   const [isRefreshing, setRefreshing] = useState(false);
+ useEffect(()=>{
+  AsyncStorage.getItem('userId').then(res=>{
+    if (res) {
+      setUserId(res)
+    }
+  })
+ },[])
   const handleRefresh = () => {
+ 
     setRefreshing(true);
     refetch()
       .then(() => setRefreshing(false))
@@ -32,8 +41,7 @@ export default function UserScreen() {
                 otherUserId : item.otherUserId,
                 displayname : item.displayname,
                 avatar : item.avatar,
-                userId
-
+                userId : userId
         })
            }}
            >
@@ -71,7 +79,7 @@ export default function UserScreen() {
 export function EmptyListComponent() {
     return (
         <View flex={1}>
-            <Text color='gray.600'>
+            <Text color='white'>
                 oop's you don't have any friends
             </Text>
         </View>

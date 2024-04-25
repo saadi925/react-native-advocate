@@ -50,6 +50,7 @@ const useLogin = () => {
         toggleAuth()
        dispatch(setProfile(response.profile))
        dispatch(setUser(response.userId))
+       AsyncStorage.setItem("userId", response.userId)
        AsyncStorage.setItem("role", response.role)
         dispatch(setRole(response.role))
       }
